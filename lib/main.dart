@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shipanther/bloc/auth/auth_bloc.dart';
 import 'package:shipanther/bloc/tenant/tenant_bloc.dart';
+import 'package:shipanther/bloc/terminal/terminal_bloc.dart';
 import 'package:shipanther/bloc/user/user_bloc.dart';
 import 'package:shipanther/data/api/api_repository.dart';
 import 'package:shipanther/data/api/remote_api_repository.dart';
@@ -10,6 +11,8 @@ import 'package:shipanther/data/auth/auth_repository.dart';
 import 'package:shipanther/data/auth/firebase_auth_repository.dart';
 import 'package:shipanther/data/tenant/remote_tenant_repository.dart';
 import 'package:shipanther/data/tenant/tenant_repository.dart';
+import 'package:shipanther/data/terminal/remote_terminal_repository.dart';
+import 'package:shipanther/data/terminal/terminal_repository.dart';
 import 'package:shipanther/data/user/remote_user_repository.dart';
 import 'package:shipanther/data/user/user_repository.dart';
 import 'package:shipanther/screens/signin_or_register_page.dart';
@@ -37,29 +40,36 @@ class ShipantherApp extends StatelessWidget {
           child: RepositoryProvider<TenantRepository>(
             create: (context) =>
                 RemoteTenantRepository(context.read<ApiRepository>()),
-            child: MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                    create: (context) =>
-                        AuthBloc(context.read<AuthRepository>())),
-                BlocProvider(
-                    create: (context) =>
-                        TenantBloc(context.read<TenantRepository>())),
-                BlocProvider(
-                    create: (context) =>
-                        UserBloc(context.read<UserRepository>())),
-              ],
-              child: MaterialApp(
-                title: 'Shipanther',
-                debugShowCheckedModeBanner: false,
-                theme: ThemeData.dark(),
-                home: SignInOrRegistrationPage(),
-                // routes: {
-                //   '/login': (context) => BlocProvider.value(
-                //         value: context.read<AuthRepository>(),
-                //         child: SignInOrRegistrationPage(),
-                //       ),
-                // },
+            child: RepositoryProvider<TerminalRepository>(
+              create: (context) =>
+                  RemoteTerminalRepository(context.read<ApiRepository>()),
+              child: MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                      create: (context) =>
+                          AuthBloc(context.read<AuthRepository>())),
+                  BlocProvider(
+                      create: (context) =>
+                          TenantBloc(context.read<TenantRepository>())),
+                  BlocProvider(
+                      create: (context) =>
+                          UserBloc(context.read<UserRepository>())),
+                  BlocProvider(
+                      create: (context) =>
+                          TerminalBloc(context.read<TerminalRepository>())),
+                ],
+                child: MaterialApp(
+                  title: 'Shipanther',
+                  debugShowCheckedModeBanner: false,
+                  theme: ThemeData.dark(),
+                  home: SignInOrRegistrationPage(),
+                  // routes: {
+                  //   '/login': (context) => BlocProvider.value(
+                  //         value: context.read<AuthRepository>(),
+                  //         child: SignInOrRegistrationPage(),
+                  //       ),
+                  // },
+                ),
               ),
             ),
           ),
