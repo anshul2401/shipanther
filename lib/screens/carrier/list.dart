@@ -19,7 +19,7 @@ class CarrierList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formatter = ShipantherLocalizations.of(context).dateFormatter;
-    final title = ShipantherLocalizations.of(context).carriersTitle;
+    final title = ShipantherLocalizations.of(context).containersTitle;
     final actions = <Widget>[];
 
     final Widget body = ListView.builder(
